@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "Player/PlayerStatComponent.h"
 #include "AugmentsDataRow.generated.h"
 
 USTRUCT(BlueprintType)
@@ -24,6 +25,14 @@ public:
 	// 해당 증강의 설명. 예) "공격력이 {0}증가합니다."
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Description;
+
+	// PlayerStatComponent에서 정의된 스탯 타입. 아직 타입이 없다면 DefaultStat으로 설정.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EPlayerStatType StatType = EPlayerStatType::DefaultStat;
+
+	// UI에 소수점(첫째자리)을 표시하려면 true로 설정
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bShowFractionalDigit = false;
 
 	// 자동으로 AugmentFName의 값을 RowName으로 채움.
 	virtual void OnDataTableChanged(const UDataTable* InDataTable, const FName InRowName) override;
