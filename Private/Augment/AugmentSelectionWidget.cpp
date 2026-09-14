@@ -1,12 +1,17 @@
-﻿#include "Augment/AugmentSelectionWidget.h"
-#include "Augment/AugmentCardWidget.h"
+﻿#include "UI/AugmentSelectionWidget.h"
+#include "UI/AugmentCardWidget.h"
 #include "Components/HorizontalBox.h"
 #include "Components/HorizontalBoxSlot.h"
+#include "Components/Button.h"
 
 void UAugmentSelectionWidget::InitializeCards(const TArray<TTuple<FName, int32>>& Augments)
 {
-	CardContainer->ClearChildren();
-	ActiveCards.Reset();
+	if (!CardContainer || !CardWidgetClass)
+	{
+		return;
+	}
+
+	ClearContainer();
 
 	for (const auto& [Name, Level] : Augments)
 	{
@@ -17,11 +22,24 @@ void UAugmentSelectionWidget::InitializeCards(const TArray<TTuple<FName, int32>>
 		Card->OnCardClicked.AddDynamic(this, &UAugmentSelectionWidget::HandleCardClicked);
 
 		UHorizontalBoxSlot* HorizonSlot = CardContainer->AddChildToHorizontalBox(Card);
-		HorizonSlot->SetPadding(FMargin(12.f, 0.f));
+		HorizonSlot->SetPadding(CardPadding);
 		HorizonSlot->SetSize(FSlateChildSize(ESlateSizeRule::Automatic));
 		HorizonSlot->SetVerticalAlignment(VAlign_Center);
 		ActiveCards.Add(Card);
 	}
+}
+
+void UAugmentSelectionWidget::ClearContainer()
+{
+	CardContainer->ClearChildren();
+	ActiveCards.Reset();
+}
+
+void UAugmentSelectionWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	RerollButton->OnClicked.AddDynamic(this, &UAugmentSelectionWidget::HandleRerollClicked);
 }
 
 void UAugmentSelectionWidget::HandleCardClicked(FName AugmentFName)
@@ -33,4 +51,11 @@ void UAugmentSelectionWidget::HandleCardClicked(FName AugmentFName)
 	}
 
 	OnAugmentChosen.Broadcast(AugmentFName);
+}
+
+void UAugmentSelectionWidget::HandleRerollClicked()
+{
+	// 리롤 여러 번 누르는 상황 방지.
+	RerollButton->SetIsEnabled(false);
+	OnRerollPressed.Broadcast();
 }
