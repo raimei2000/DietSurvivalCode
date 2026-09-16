@@ -17,6 +17,8 @@ void UDietGameInstance::Init()
 
 	if (UDataTableSubsystem* DataTableSubsystem = GetSubsystem<UDataTableSubsystem>())
 	{
-		DataTableSubsystem->LoadDataTables(AugmentDataTable);
+		DataTableSubsystem->LoadAugmentDataTable(AugmentDataTable);
+		DataTableSubsystem->LoadSkillDataTable(SkillDataTable);
+		DataTableSubsystem->LoadEnemyDataTable(EnemyDataTable);
 	}
 }

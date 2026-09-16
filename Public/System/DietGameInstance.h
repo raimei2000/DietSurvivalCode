@@ -23,4 +23,10 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DataTable", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UDataTable> AugmentDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DataTable", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UDataTable> SkillDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DataTable", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UDataTable> EnemyDataTable;
 };
